@@ -7,6 +7,7 @@ import CreateTheaterScreen from '../screens/CreateTheaterScreen';
 import EditTheaterScreen from '../screens/EditTheaterScreen';
 import HomeScreen from '../screens/HomeScreen';
 import MovieScreen from '@/screens/MovieScreen';
+import CreateMovieScreen from '@/screens/CreateMovieScreen';
 
 
 export type DrawerParamList = {
@@ -15,6 +16,7 @@ export type DrawerParamList = {
     CreateTheater: undefined;
     EditTheater: { theater: Theater };
     Movies: undefined;
+    CreateMovie: undefined;
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -65,6 +67,11 @@ const DrawerNavigator = () => {
                     drawerIcon: ({ color, size }) => <Ionicons name="film-outline" size={size} color={color} />,
                     title: 'Filmes',
                 }}
+            />
+            <Drawer.Screen
+                name="CreateMovie"
+                component={CreateMovieScreen}
+                options={{ drawerItemStyle: { display: 'none' }, title: 'Cadastrar Filme' }}
             />
         </Drawer.Navigator>
     );

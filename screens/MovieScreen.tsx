@@ -79,7 +79,7 @@ const MovieScreen = ({ navigation }: Props) => {
             )}
             <TouchableOpacity
                 style={styles.fab}
-                // onPress={() => navigation.navigate('CreateMovie')}
+                onPress={() => navigation.navigate('CreateMovie')}
             >
                 <Ionicons name="add" size={28} color="#fff" />
             </TouchableOpacity>
