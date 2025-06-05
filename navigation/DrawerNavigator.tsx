@@ -11,6 +11,7 @@ import CreateMovieScreen from '@/screens/CreateMovieScreen';
 import GenderScreen, { Gender } from '@/screens/GenderScreen';
 import CreateGenderScreen from '@/screens/CreateGenderScreen';
 import EditGenderScreen from '@/screens/EditGenderScreen';
+import RoomScreen from '@/screens/RoomScreen';
 
 
 export type DrawerParamList = {
@@ -23,6 +24,7 @@ export type DrawerParamList = {
     Genders: undefined;
     CreateGender: undefined;
     EditGender: { gender: Gender };
+    Rooms: undefined;
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -96,6 +98,14 @@ const DrawerNavigator = () => {
                 name="EditGender"
                 component={EditGenderScreen}
                 options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Gênero' }}
+            />
+            <Drawer.Screen
+                name="Rooms"
+                component={RoomScreen}
+                options={{
+                    drawerIcon: ({ color, size }) => <Ionicons name="pricetag-outline" size={size} color={color} />,
+                    title: 'Salas',
+                }}
             />
         </Drawer.Navigator>
     );
