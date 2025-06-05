@@ -94,7 +94,7 @@ const ClientScreen = ({ navigation }: Props) => {
             )}
             <TouchableOpacity
                 style={styles.fab}
-                // onPress={() => navigation.navigate('CreateClient')}
+                onPress={() => navigation.navigate('CreateClient')}
             >
                 <Ionicons name="add" size={28} color="#fff" />
             </TouchableOpacity>

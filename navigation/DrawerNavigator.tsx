@@ -15,6 +15,7 @@ import RoomScreen, { Room } from '@/screens/RoomScreen';
 import CreateRoomScreen from '@/screens/CreateRoomScreen';
 import EditRoomScreen from '@/screens/EditRoomScreen';
 import ClientScreen from '@/screens/ClientScreen';
+import CreateClientScreen from '@/screens/CreateClientScreen';
 
 
 export type DrawerParamList = {
@@ -31,6 +32,7 @@ export type DrawerParamList = {
     CreateRoom: undefined;
     EditRoom: { room: Room };
     Clients: undefined;
+    CreateClient: undefined;
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -130,6 +132,11 @@ const DrawerNavigator = () => {
                     drawerIcon: ({ color, size }) => <Ionicons name="people-outline" size={size} color={color} />,
                     title: 'Clientes',
                 }}
+            />
+            <Drawer.Screen
+                name="CreateClient"
+                component={CreateClientScreen}
+                options={{ drawerItemStyle: { display: 'none' }, title: 'Cadastrar Cliente' }}
             />
         </Drawer.Navigator>
     );
