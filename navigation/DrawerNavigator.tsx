@@ -9,6 +9,7 @@ import HomeScreen from '../screens/HomeScreen';
 import MovieScreen, { Movie } from '@/screens/MovieScreen';
 import CreateMovieScreen from '@/screens/CreateMovieScreen';
 import GenderScreen from '@/screens/GenderScreen';
+import CreateGenderScreen from '@/screens/CreateGenderScreen';
 
 
 export type DrawerParamList = {
@@ -19,6 +20,7 @@ export type DrawerParamList = {
     Movies: undefined;
     CreateMovie: undefined;
     Genders: undefined;
+    CreateGender: undefined;
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -82,6 +84,11 @@ const DrawerNavigator = () => {
                     drawerIcon: ({ color, size }) => <Ionicons name="planet-outline" size={size} color={color} />,
                     title: 'Gêneros',
                 }}
+            />
+            <Drawer.Screen
+                name="CreateGender"
+                component={CreateGenderScreen}
+                options={{ drawerItemStyle: { display: 'none' }, title: 'Cadastrar Gênero' }}
             />
         </Drawer.Navigator>
     );
