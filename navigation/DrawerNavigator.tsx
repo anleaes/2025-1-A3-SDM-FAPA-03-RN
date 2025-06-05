@@ -8,8 +8,9 @@ import EditTheaterScreen from '../screens/EditTheaterScreen';
 import HomeScreen from '../screens/HomeScreen';
 import MovieScreen, { Movie } from '@/screens/MovieScreen';
 import CreateMovieScreen from '@/screens/CreateMovieScreen';
-import GenderScreen from '@/screens/GenderScreen';
+import GenderScreen, { Gender } from '@/screens/GenderScreen';
 import CreateGenderScreen from '@/screens/CreateGenderScreen';
+import EditGenderScreen from '@/screens/EditGenderScreen';
 
 
 export type DrawerParamList = {
@@ -21,6 +22,7 @@ export type DrawerParamList = {
     CreateMovie: undefined;
     Genders: undefined;
     CreateGender: undefined;
+    EditGender: { gender: Gender };
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -89,6 +91,11 @@ const DrawerNavigator = () => {
                 name="CreateGender"
                 component={CreateGenderScreen}
                 options={{ drawerItemStyle: { display: 'none' }, title: 'Cadastrar Gênero' }}
+            />
+            <Drawer.Screen
+                name="EditGender"
+                component={EditGenderScreen}
+                options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Gênero' }}
             />
         </Drawer.Navigator>
     );

@@ -1,36 +1,36 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
-import { useFocusEffect } from 'expo-router';
-import React, { useCallback, useState } from 'react';
-import { ActivityIndicator, Button, StyleSheet, Switch, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, Button, StyleSheet, Switch, Text, TextInput, Touchable, TouchableOpacity, View } from 'react-native';
 import { DrawerParamList } from '../navigation/DrawerNavigator';
 import { Picker } from '@react-native-picker/picker';
 
-type Props = DrawerScreenProps<DrawerParamList, 'CreateGender'>;
+type Props = DrawerScreenProps<DrawerParamList, 'EditGender'>;
 
-const CreateGenderScreen = ({ navigation }: Props) => {
-
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [isActive, setIsActive] = useState(false);
-    const [popularity, setPopularity] = useState<'B' | 'M' | 'A'>('B');
+const EditGenderScreen = ({ route, navigation }: Props) => {
+    const { gender } = route.params;
+    const [name, setName] = useState(gender.name);
+    const [description, setDescription] = useState(gender.description);
+    const [isActive, setIsActive] = useState(gender.isActive);
+    const [popularity, setPopularity] = useState<'B' | 'M' | 'A'>(gender.popularity);
     const [saving, setSaving] = useState(false);
 
-    useFocusEffect(
-        useCallback(() => {
-            setName('');
-            setDescription('');
-            setIsActive(false);
-            setPopularity('B');
-        }, [])
-    );
+    useEffect(() => {
+        setName(gender.name);
+        setDescription(gender.description);
+        setIsActive(gender.isActive);
+        setPopularity(gender.popularity);
+    }, [gender]);
 
     const handleSave = async () => {
         setSaving(true);
-        const res = await fetch('http://localhost:8000/gêneros/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, description, isActive, popularity }),
-        });
+        const res = await fetch(
+            `http://localhost:8000/gêneros/${gender.id}/`,
+            {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, description, isActive, popularity }),
+            }
+        );
         navigation.navigate('Genders');
         setSaving(false);
     };
@@ -39,7 +39,6 @@ const CreateGenderScreen = ({ navigation }: Props) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Adicionar Gênero</Text>
             <Text style={styles.label}>Nome</Text>
             <TextInput
                 value={name}
@@ -47,14 +46,10 @@ const CreateGenderScreen = ({ navigation }: Props) => {
                 style={styles.input}
             />
             <Text style={styles.label}>Descrição</Text>
-            <TextInput
-                value={description}
-                onChangeText={setDescription}
-                style={styles.input}
-                multiline
-            />
+            <TextInput value={description} onChangeText={setDescription} style={styles.input} multiline />
+            <Text style={styles.label}>Gênero ativo</Text>
+            <Text style={styles.label}>Popularidade</Text>
             <div style={styles.pickerHolder}>
-                <Text style={styles.label}>Popularidade</Text>
                 <Picker
                     selectedValue={popularity}
                     onValueChange={(itemValue) => setPopularity(itemValue)}
@@ -66,14 +61,13 @@ const CreateGenderScreen = ({ navigation }: Props) => {
                 </Picker>
             </div>
             <div style={styles.switch}>
-            <Text style={styles.label}>Gênero ativo</Text>
-            <Switch
-                trackColor={{ false: '#767577', true: '#14213D' }}
-                thumbColor={isActive ? '#FCA311' : '#f4f3f4'}
-                onValueChange={toggleSwitch}
-                value={isActive}
-                style={{ marginTop: 11 }}
-            />
+                <Switch
+                    trackColor={{ false: '#767577', true: '#14213D' }}
+                    thumbColor={isActive ? '#FCA311' : '#f4f3f4'}
+                    onValueChange={toggleSwitch}
+                    value={isActive}
+                    style={{ marginTop: 11 }}
+                />
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'row', gap: 8, marginTop: 16, alignSelf: 'center' }}>
@@ -90,7 +84,7 @@ const CreateGenderScreen = ({ navigation }: Props) => {
                         <Text style={{ color: '#fff', fontWeight: '500', alignSelf: 'center' }}>SALVAR</Text>
                     }
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('Genders')} style={{
+                <TouchableOpacity onPress={() => navigation.navigate('Theaters')} style={{
                     backgroundColor: '#14213D',
                     padding: 8,
                     borderRadius: 6,
@@ -99,6 +93,7 @@ const CreateGenderScreen = ({ navigation }: Props) => {
                 </TouchableOpacity>
             </div>
         </View>
+
     );
 };
 
@@ -108,15 +103,8 @@ const styles = StyleSheet.create({
         padding: 16,
         backgroundColor: '#fff'
     },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginBottom: 12,
-        alignSelf: 'center',
-        color: '#14213D',
-    },
     label: {
-        fontWeight: '600',
+        fontWeight: 'bold',
         marginTop: 12,
         marginBottom: 4
     },
@@ -144,8 +132,9 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         gap: 8,
+
         alignItems: 'center',
     },
 });
 
-export default CreateGenderScreen;
+export default EditGenderScreen;
