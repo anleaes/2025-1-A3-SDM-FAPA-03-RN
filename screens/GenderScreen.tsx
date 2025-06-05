@@ -94,7 +94,7 @@ const GenderScreen = ({ navigation }: Props) => {
             )}
             <TouchableOpacity
                 style={styles.fab}
-            // onPress={() => navigation.navigate('CreateGender')}
+                onPress={() => navigation.navigate('CreateGender')}
             >
                 <Ionicons name="add" size={28} color="#fff" />
             </TouchableOpacity>
