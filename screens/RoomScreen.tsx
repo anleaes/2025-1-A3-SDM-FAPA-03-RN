@@ -88,7 +88,7 @@ const RoomScreen = ({ navigation }: Props) => {
             )}
             <TouchableOpacity
                 style={styles.fab}
-                // onPress={() => navigation.navigate('CreateRoom')}
+                onPress={() => navigation.navigate('CreateRoom')}
             >
                 <Ionicons name="add" size={28} color="#fff" />
             </TouchableOpacity>

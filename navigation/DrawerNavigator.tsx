@@ -12,6 +12,7 @@ import GenderScreen, { Gender } from '@/screens/GenderScreen';
 import CreateGenderScreen from '@/screens/CreateGenderScreen';
 import EditGenderScreen from '@/screens/EditGenderScreen';
 import RoomScreen from '@/screens/RoomScreen';
+import CreateRoomScreen from '@/screens/CreateRoomScreen';
 
 
 export type DrawerParamList = {
@@ -25,6 +26,7 @@ export type DrawerParamList = {
     CreateGender: undefined;
     EditGender: { gender: Gender };
     Rooms: undefined;
+    CreateRoom: undefined;
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -106,6 +108,11 @@ const DrawerNavigator = () => {
                     drawerIcon: ({ color, size }) => <Ionicons name="pricetag-outline" size={size} color={color} />,
                     title: 'Salas',
                 }}
+            />
+            <Drawer.Screen
+                name="CreateRoom"
+                component={CreateRoomScreen}
+                options={{ drawerItemStyle: { display: 'none' }, title: 'Cadastrar Sala' }}
             />
         </Drawer.Navigator>
     );
