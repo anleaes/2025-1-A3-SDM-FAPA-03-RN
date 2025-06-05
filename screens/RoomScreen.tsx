@@ -59,7 +59,7 @@ const RoomScreen = ({ navigation }: Props) => {
             <div style={styles.button}>
                 <TouchableOpacity
                     style={styles.editButton}
-                    // onPress={() => navigation.navigate('EditRoom', { room: item })}
+                    onPress={() => navigation.navigate('EditRoom', { room: item })}
                 >
                     <Ionicons name="pencil" size={24} color="#fff" />
                 </TouchableOpacity>
