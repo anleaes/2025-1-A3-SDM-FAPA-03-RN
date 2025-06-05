@@ -65,7 +65,7 @@ const ClientScreen = ({ navigation }: Props) => {
             <div style={styles.button}>
                 <TouchableOpacity
                     style={styles.editButton}
-                    // onPress={() => navigation.navigate('EditClient', { client: item })}
+                    onPress={() => navigation.navigate('EditClient', { client: item })}
                 >
                     <Ionicons name="pencil" size={24} color="#fff" />
                 </TouchableOpacity>
