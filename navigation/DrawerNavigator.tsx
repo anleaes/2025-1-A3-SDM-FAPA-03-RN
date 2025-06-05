@@ -14,8 +14,9 @@ import EditGenderScreen from '@/screens/EditGenderScreen';
 import RoomScreen, { Room } from '@/screens/RoomScreen';
 import CreateRoomScreen from '@/screens/CreateRoomScreen';
 import EditRoomScreen from '@/screens/EditRoomScreen';
-import ClientScreen from '@/screens/ClientScreen';
+import ClientScreen, { Client } from '@/screens/ClientScreen';
 import CreateClientScreen from '@/screens/CreateClientScreen';
+import EditClientScreen from '@/screens/EditClientScreen';
 
 
 export type DrawerParamList = {
@@ -33,6 +34,7 @@ export type DrawerParamList = {
     EditRoom: { room: Room };
     Clients: undefined;
     CreateClient: undefined;
+    EditClient: { client: Client };
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -137,6 +139,11 @@ const DrawerNavigator = () => {
                 name="CreateClient"
                 component={CreateClientScreen}
                 options={{ drawerItemStyle: { display: 'none' }, title: 'Cadastrar Cliente' }}
+            />
+            <Drawer.Screen
+                name="EditClient"
+                component={EditClientScreen}
+                options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Cliente' }}
             />
         </Drawer.Navigator>
     );
