@@ -1,21 +1,20 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
-import { useFocusEffect } from 'expo-router';
-import React, { useCallback, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { DrawerParamList } from '../navigation/DrawerNavigator';
 import { Picker } from '@react-native-picker/picker';
 import { Client } from './ClientScreen';
 
-type Props = DrawerScreenProps<DrawerParamList, 'CreateTicket'>;
+type Props = DrawerScreenProps<DrawerParamList, 'EditTicket'>;
 
-const CreateTicketScreen = ({ navigation }: Props) => {
-
-    const [client, setClient] = useState('');
+const EditTicketScreen = ({ route, navigation }: Props) => {
+    const { ticket } = route.params;
+    const [client, setClient] = useState(ticket.clientDetail.id);
     const [clientList, setClientList] = useState<Client[]>([]);
-    const [rating, setRating] = useState<'L' | '10' | '12' | '14' | '16' | '18'>('L');
-    const [totalPrice, setTotalPrice] = useState('');
-    const [paymentMethod, setPaymentMethod] = useState<'boleto' | 'cartao' | 'pix'>('boleto');
-    const [status, setStatus] = useState<'pendente' | 'pago' | 'cancelado'>('pendente');
+    const [rating, setRating] = useState<'L' | '10' | '12' | '14' | '16' | '18'>(ticket.rating);
+    const [totalPrice, setTotalPrice] = useState(ticket.totalPrice);
+    const [paymentMethod, setPaymentMethod] = useState<'boleto' | 'cartao' | 'pix'>(ticket.paymentMethod);
+    const [status, setStatus] = useState<'pendente' | 'pago' | 'cancelado'>(ticket.status);
     const [saving, setSaving] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -27,22 +26,19 @@ const CreateTicketScreen = ({ navigation }: Props) => {
         setLoading(false);
     };
 
-    useFocusEffect(
-        useCallback(() => {
-            setClient('');
-            setRating('L');
-            setTotalPrice('');
-            setPaymentMethod('boleto');
-            setStatus('pendente');
-            fetchClientsList();
-        }, [])
-    );
-
+    useEffect(() => {
+        setClient(ticket.clientDetail.id);
+        setRating(ticket.rating);
+        setTotalPrice(ticket.totalPrice);
+        setPaymentMethod(ticket.paymentMethod);
+        setStatus(ticket.status);
+        fetchClientsList();
+    }, [ticket])
 
     const handleSave = async () => {
         setSaving(true);
-        const res = await fetch('http://localhost:8000/ingressos/', {
-            method: 'POST',
+        const res = await fetch(`http://localhost:8000/ingressos/${ticket.id}/`, {
+            method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ client, rating, totalPrice, paymentMethod, status }),
         });
@@ -65,7 +61,8 @@ const CreateTicketScreen = ({ navigation }: Props) => {
                         {clientList.map((client) => (
                             <Picker.Item label={client.name} value={client.id} />
                         ))}
-                    </Picker>)}
+                    </Picker>
+                )}
             </div>
             <div style={styles.pickerHolder}>
                 <Text style={styles.label}>Classificação</Text>
@@ -90,6 +87,8 @@ const CreateTicketScreen = ({ navigation }: Props) => {
                     style={styles.picker}
                 >
                     <Picker.Item label="Pendente" value="pendente" />
+                    <Picker.Item label="Pago" value="pago" />
+                    <Picker.Item label="Cancelado" value="cancelado" />
                 </Picker>
             </div>
             <div style={styles.pickerHolder}>
@@ -106,9 +105,12 @@ const CreateTicketScreen = ({ navigation }: Props) => {
             </div>
             <Text style={styles.label}>Valor Total</Text>
             <TextInput
-                value={totalPrice}
+                value={totalPrice.toString()}
                 keyboardType='numeric'
-                onChangeText={setTotalPrice}
+                onChangeText={(text) => {
+                    const parsed = parseInt(text, 10);
+                    setTotalPrice(isNaN(parsed) ? 0 : parsed);
+                }}
                 style={styles.input}
             />
 
@@ -166,7 +168,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         gap: 8,
-
         alignSelf: 'center'
     },
     picker: {
@@ -178,4 +179,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CreateTicketScreen;
+export default EditTicketScreen;

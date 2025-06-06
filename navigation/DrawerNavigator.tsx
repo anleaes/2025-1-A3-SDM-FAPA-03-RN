@@ -17,8 +17,9 @@ import EditRoomScreen from '@/screens/EditRoomScreen';
 import ClientScreen, { Client } from '@/screens/ClientScreen';
 import CreateClientScreen from '@/screens/CreateClientScreen';
 import EditClientScreen from '@/screens/EditClientScreen';
-import TicketScreen from '@/screens/TicketScreen';
+import TicketScreen, { Ticket } from '@/screens/TicketScreen';
 import CreateTicketScreen from '@/screens/CreateTicketScreen';
+import EditTicketScreen from '@/screens/EditTicketScreen';
 
 
 export type DrawerParamList = {
@@ -39,6 +40,7 @@ export type DrawerParamList = {
     EditClient: { client: Client };
     Tickets: undefined;
     CreateTicket: undefined;
+    EditTicket: { ticket: Ticket };
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -161,6 +163,11 @@ const DrawerNavigator = () => {
                 name="CreateTicket"
                 component={CreateTicketScreen}
                 options={{ drawerItemStyle: { display: 'none' }, title: 'Cadastrar Ingresso' }}
+            />
+            <Drawer.Screen
+                name="EditTicket"
+                component={EditTicketScreen}
+                options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Ingresso' }}
             />
         </Drawer.Navigator>
     );
