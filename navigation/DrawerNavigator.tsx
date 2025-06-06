@@ -17,6 +17,7 @@ import EditRoomScreen from '@/screens/EditRoomScreen';
 import ClientScreen, { Client } from '@/screens/ClientScreen';
 import CreateClientScreen from '@/screens/CreateClientScreen';
 import EditClientScreen from '@/screens/EditClientScreen';
+import TicketScreen from '@/screens/TicketScreen';
 
 
 export type DrawerParamList = {
@@ -35,6 +36,7 @@ export type DrawerParamList = {
     Clients: undefined;
     CreateClient: undefined;
     EditClient: { client: Client };
+    Tickets: undefined;
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -144,6 +146,14 @@ const DrawerNavigator = () => {
                 name="EditClient"
                 component={EditClientScreen}
                 options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Cliente' }}
+            />
+            <Drawer.Screen
+                name="Tickets"
+                component={TicketScreen}
+                options={{
+                    drawerIcon: ({ color, size }) => <Ionicons name="ticket-outline" size={size} color={color} />,
+                    title: 'Ingressos',
+                }}
             />
         </Drawer.Navigator>
     );
