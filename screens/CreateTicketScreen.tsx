@@ -52,6 +52,7 @@ const CreateTicketScreen = ({ navigation }: Props) => {
 
     return (
         <View style={styles.container}>
+            <Text style={styles.title}>Registrar Ingresso</Text>
             <div style={styles.pickerHolder}>
                 <Text style={styles.label}>Cliente</Text>
                 {loading ? (
