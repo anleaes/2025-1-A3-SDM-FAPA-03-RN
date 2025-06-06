@@ -20,6 +20,7 @@ import EditClientScreen from '@/screens/EditClientScreen';
 import TicketScreen, { Ticket } from '@/screens/TicketScreen';
 import CreateTicketScreen from '@/screens/CreateTicketScreen';
 import EditTicketScreen from '@/screens/EditTicketScreen';
+import SessionScreen from '@/screens/SessionScreen';
 
 
 export type DrawerParamList = {
@@ -41,6 +42,7 @@ export type DrawerParamList = {
     Tickets: undefined;
     CreateTicket: undefined;
     EditTicket: { ticket: Ticket };
+    Session: undefined;
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -168,6 +170,14 @@ const DrawerNavigator = () => {
                 name="EditTicket"
                 component={EditTicketScreen}
                 options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Ingresso' }}
+            />
+            <Drawer.Screen
+                name="Session"
+                component={SessionScreen}
+                options={{
+                    drawerIcon: ({ color, size }) => <Ionicons name="calendar-clear-outline" size={size} color={color} />,
+                    title: 'Sessões',
+                }}
             />
         </Drawer.Navigator>
     );
