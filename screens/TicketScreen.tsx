@@ -62,7 +62,7 @@ const TicketScreen = ({ navigation }: Props) => {
             <div style={styles.button}>
                 <TouchableOpacity
                     style={styles.editButton}
-                // onPress={() => navigation.navigate('EditTicket', { ticket: item })}
+                    onPress={() => navigation.navigate('EditTicket', { ticket: item })}
                 >
                     <Ionicons name="pencil" size={24} color="#fff" />
                 </TouchableOpacity>
