@@ -18,6 +18,7 @@ import ClientScreen, { Client } from '@/screens/ClientScreen';
 import CreateClientScreen from '@/screens/CreateClientScreen';
 import EditClientScreen from '@/screens/EditClientScreen';
 import TicketScreen from '@/screens/TicketScreen';
+import CreateTicketScreen from '@/screens/CreateTicketScreen';
 
 
 export type DrawerParamList = {
@@ -37,6 +38,7 @@ export type DrawerParamList = {
     CreateClient: undefined;
     EditClient: { client: Client };
     Tickets: undefined;
+    CreateTicket: undefined;
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -154,6 +156,11 @@ const DrawerNavigator = () => {
                     drawerIcon: ({ color, size }) => <Ionicons name="ticket-outline" size={size} color={color} />,
                     title: 'Ingressos',
                 }}
+            />
+            <Drawer.Screen
+                name="CreateTicket"
+                component={CreateTicketScreen}
+                options={{ drawerItemStyle: { display: 'none' }, title: 'Cadastrar Ingresso' }}
             />
         </Drawer.Navigator>
     );

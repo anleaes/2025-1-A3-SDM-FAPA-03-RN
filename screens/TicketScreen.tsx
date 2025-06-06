@@ -37,10 +37,10 @@ const TicketScreen = ({ navigation }: Props) => {
     );
 
     const handleDelete = async (id: number) => {
-        const res = await fetch(`http://localhost:8000/salas/${id}/`, {
+        const res = await fetch(`http://localhost:8000/ingressos/${id}/`, {
             method: 'DELETE',
         });
-        setTickets(prev => prev.filter(c => c.id !== id));
+        setTickets(prev => prev.filter(t => t.id !== id));
     };
 
     const ratingMap = {
@@ -91,7 +91,7 @@ const TicketScreen = ({ navigation }: Props) => {
             )}
             <TouchableOpacity
                 style={styles.fab}
-            // onPress={() => navigation.navigate('CreateTicket')}
+                onPress={() => navigation.navigate('CreateTicket')}
             >
                 <Ionicons name="add" size={28} color="#fff" />
             </TouchableOpacity>
