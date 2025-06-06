@@ -61,7 +61,7 @@ const SessionScreen = ({ navigation }: Props) => {
             <div style={styles.button}>
                 <TouchableOpacity
                     style={styles.editButton}
-                    // onPress={() => navigation.navigate('EditSession', { session: item })}
+                    onPress={() => navigation.navigate('EditSession', { session: item })}
                 >
                     <Ionicons name="pencil" size={24} color="#fff" />
                 </TouchableOpacity>
