@@ -84,7 +84,7 @@ const EditGenderScreen = ({ route, navigation }: Props) => {
                         <Text style={{ color: '#fff', fontWeight: '500', alignSelf: 'center' }}>SALVAR</Text>
                     }
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate('Theaters')} style={{
+                <TouchableOpacity onPress={() => navigation.navigate('Genders')} style={{
                     backgroundColor: '#14213D',
                     padding: 8,
                     borderRadius: 6,

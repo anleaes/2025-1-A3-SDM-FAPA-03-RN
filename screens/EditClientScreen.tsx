@@ -36,7 +36,6 @@ const EditClientScreen = ({ route, navigation }: Props) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Adicionar Cliente</Text>
             <Text style={styles.label}>Nome</Text>
             <TextInput
                 value={name}

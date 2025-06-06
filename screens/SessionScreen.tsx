@@ -8,7 +8,7 @@ import { Theater } from './TheaterScreen';
 import { Movie } from './MovieScreen';
 import { Room } from './RoomScreen';
 
-type Props = DrawerScreenProps<DrawerParamList, 'Session'>;
+type Props = DrawerScreenProps<DrawerParamList, 'Sessions'>;
 
 export type Session = {
     id: number;
@@ -90,7 +90,7 @@ const SessionScreen = ({ navigation }: Props) => {
             )}
             <TouchableOpacity
                 style={styles.fab}
-                // onPress={() => navigation.navigate('CreateSession')}
+                onPress={() => navigation.navigate('CreateSession')}
             >
                 <Ionicons name="add" size={28} color="#fff" />
             </TouchableOpacity>
