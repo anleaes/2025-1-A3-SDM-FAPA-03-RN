@@ -11,14 +11,14 @@ import { Provider as PaperProvider, MD3LightTheme } from 'react-native-paper';
 import { DatePickerModal } from 'react-native-paper-dates';
 import { formatDateToObject } from '@/utils/formateDate';
 
-type Props = DrawerScreenProps<DrawerParamList, 'CreateSessionTicket'>;
+type Props = DrawerScreenProps<DrawerParamList, 'EditSessionTicket'>;
 
-const CreateSessionTicketScreen = ({ navigation }: Props) => {
-
-    const [ticket, setTicket] = useState('');
-    const [session, setSession] = useState('');
-    const [type, setType] = useState<'inteira' | 'meia' | 'cortesia'>('inteira');
-    const [dateOfPurchase, setDateOfPurchase] = useState('');
+const EditSessionTicketScreen = ({ route, navigation }: Props) => {
+    const { sessionTicket } = route.params;
+    const [ticket, setTicket] = useState(sessionTicket.ticketDetail.id);
+    const [session, setSession] = useState(sessionTicket.sessionDetail.id);
+    const [type, setType] = useState<'inteira' | 'meia' | 'cortesia'>(sessionTicket.type);
+    const [dateOfPurchase, setDateOfPurchase] = useState(sessionTicket.dateOfPurchase);
     const [ticketList, setTicketList] = useState<Ticket[]>([]);
     const [sessionList, setSessionList] = useState<Session[]>([]);
     const [date, setDate] = useState(new Date());
@@ -44,10 +44,10 @@ const CreateSessionTicketScreen = ({ navigation }: Props) => {
 
     useFocusEffect(
         useCallback(() => {
-            setTicket('');
-            setSession('');
-            setType('inteira');
-            setDateOfPurchase('');
+            setTicket(sessionTicket.ticketDetail.id);
+            setSession(sessionTicket.sessionDetail.id);
+            setType(sessionTicket.type);
+            setDateOfPurchase(sessionTicket.dateOfPurchase);
             fetchTicketsList();
             fetchSessionsList();
         }, [])
@@ -56,8 +56,8 @@ const CreateSessionTicketScreen = ({ navigation }: Props) => {
 
     const handleSave = async () => {
         setSaving(true);
-        const res = await fetch('http://localhost:8000/ingressos-da-sessão/', {
-            method: 'POST',
+        const res = await fetch(`http://localhost:8000/ingressos-da-sessão/${sessionTicket.id}/`, {
+            method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ticket, session, type, dateOfPurchase }),
         });
@@ -213,4 +213,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CreateSessionTicketScreen;
+export default EditSessionTicketScreen;
