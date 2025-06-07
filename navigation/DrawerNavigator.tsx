@@ -23,8 +23,9 @@ import EditTicketScreen from '@/screens/EditTicketScreen';
 import SessionScreen, { Session } from '@/screens/SessionScreen';
 import CreateSessionScreen from '@/screens/CreateSession';
 import EditSessionScreen from '@/screens/EditSession';
-import SessionTicketScreen from '@/screens/SessionTicketScreen';
+import SessionTicketScreen, { SessionTicket } from '@/screens/SessionTicketScreen';
 import CreateSessionTicketScreen from '@/screens/CreateSessionTicketScreen';
+import EditSessionTicketScreen from '@/screens/EditSessionTicketScreen';
 
 
 export type DrawerParamList = {
@@ -51,6 +52,7 @@ export type DrawerParamList = {
     EditSession: { session: Session }
     SessionTickets: undefined;
     CreateSessionTicket: undefined;
+    EditSessionTicket: { sessionTicket: SessionTicket };
 };
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
@@ -209,6 +211,11 @@ const DrawerNavigator = () => {
                 name="CreateSessionTicket"
                 component={CreateSessionTicketScreen}
                 options={{ drawerItemStyle: { display: 'none' }, title: 'Cadastrar Ingresso da Sessão' }}
+            />
+            <Drawer.Screen
+                name="EditSessionTicket"
+                component={EditSessionTicketScreen}
+                options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Ingresso da Sessão' }}
             />
         </Drawer.Navigator>
     );
