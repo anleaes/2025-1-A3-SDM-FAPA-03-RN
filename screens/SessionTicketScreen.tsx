@@ -46,20 +46,25 @@ const SessionTicketScreen = ({ navigation }: Props) => {
     const typeMap = {
         inteira: 'Entrada Inteira',
         meia: 'Meia Entrada',
-        cortesia: 'EntradaCortesia',
+        cortesia: 'Entrada Cortesia',
     }
+
+    const formatDateString = (dateStr: string) => {
+        const [year, month, day] = dateStr.split('-');
+        return `${day}/${month}/${year}`;
+    };
 
     const renderItem = ({ item }: { item: SessionTicket }) => (
         <View style={styles.card}>
-            <Text style={styles.status}>Sessão {item.sessionDetail.id}</Text>   
+            <Text style={styles.status}>Sessão {item.sessionDetail.id}</Text>
             <Text style={styles.description}>Filme: {item.sessionDetail.movieDetail.title}</Text>
             <Text style={styles.description}>Ingresso Nº{item.ticketDetail.id}</Text>
-            <Text style={styles.description}>Data de compra: {item.dateOfPurchase}</Text>
+            <Text style={styles.description}>Data de compra: {formatDateString(item.dateOfPurchase)}</Text>
             <Text style={styles.description}>Tipo: {typeMap[item.type]}</Text>
             <div style={styles.button}>
                 <TouchableOpacity
                     style={styles.editButton}
-                    // onPress={() => navigation.navigate('EditSessionTicket', { sessionTicket: item })}
+                // onPress={() => navigation.navigate('EditSessionTicket', { sessionTicket: item })}
                 >
                     <Ionicons name="pencil" size={24} color="#fff" />
                 </TouchableOpacity>
@@ -88,7 +93,7 @@ const SessionTicketScreen = ({ navigation }: Props) => {
             )}
             <TouchableOpacity
                 style={styles.fab}
-                // onPress={() => navigation.navigate('CreateSessionTicket')}
+                onPress={() => navigation.navigate('CreateSessionTicket')}
             >
                 <Ionicons name="add" size={28} color="#fff" />
             </TouchableOpacity>
