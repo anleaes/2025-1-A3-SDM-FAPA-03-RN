@@ -59,7 +59,7 @@ const MovieScreen = ({ navigation }: Props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.editButton}
-                    // onPress={() => navigation.navigate('EditMovie', { movie: item })}
+                    onPress={() => navigation.navigate('EditMovie', { movie: item })}
                 >
                     <Ionicons name="pencil" size={24} color="#fff" />
                 </TouchableOpacity>

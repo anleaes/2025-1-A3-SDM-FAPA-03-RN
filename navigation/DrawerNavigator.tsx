@@ -26,6 +26,7 @@ import EditSessionScreen from '@/screens/EditSession';
 import SessionTicketScreen, { SessionTicket } from '@/screens/SessionTicketScreen';
 import CreateSessionTicketScreen from '@/screens/CreateSessionTicketScreen';
 import EditSessionTicketScreen from '@/screens/EditSessionTicketScreen';
+import EditMovieScreen from '@/screens/EditMovieScreen';
 
 
 export type DrawerParamList = {
@@ -35,6 +36,7 @@ export type DrawerParamList = {
     EditTheater: { theater: Theater };
     Movies: undefined;
     CreateMovie: undefined;
+    EditMovie: { movie: Movie };
     Genders: undefined;
     CreateGender: undefined;
     EditGender: { gender: Gender };
@@ -108,6 +110,11 @@ const DrawerNavigator = () => {
                 name="CreateMovie"
                 component={CreateMovieScreen}
                 options={{ drawerItemStyle: { display: 'none' }, title: 'Cadastrar Filme' }}
+            />
+            <Drawer.Screen
+                name="EditMovie"
+                component={EditMovieScreen}
+                options={{ drawerItemStyle: { display: 'none' }, title: 'Editar Filme' }}
             />
             <Drawer.Screen
                 name="Genders"
