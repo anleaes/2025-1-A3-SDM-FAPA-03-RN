@@ -1,8 +1,11 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
 import { useFocusEffect } from 'expo-router';
 import React, { useCallback, useState } from 'react';
-import { ActivityIndicator, Button, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Checkbox } from 'react-native-paper';
 import { DrawerParamList } from '../navigation/DrawerNavigator';
+import { Gender } from './GenderScreen';
+import * as ImagePicker from 'expo-image-picker';
 
 type Props = DrawerScreenProps<DrawerParamList, 'CreateMovie'>;
 
@@ -11,30 +14,75 @@ const CreateMovieScreen = ({ navigation }: Props) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [duration, setDuration] = useState('');
-    const [poster, setPoster] = useState('');
-    // todo decobrir como tratar relações many to many no react native
-    const [genders, setGenders] = useState<string[]>([]);
+    const [poster, setPoster] = useState<File | undefined>(undefined);
+    const [gender, setGender] = useState<number[]>([]);
+    const [genders, setGenders] = useState<Gender[]>([]);
     const [saving, setSaving] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const fetchGenders = async () => {
+        setLoading(true);
+        const response = await fetch('http://localhost:8000/gêneros/');
+        const data = await response.json();
+        setGenders(data);
+        setLoading(false);
+    };
 
     useFocusEffect(
         useCallback(() => {
             setTitle('');
             setDescription('');
-            setPoster('');
+            setPoster(undefined);
             setDuration('');
+            setGender([]);
+            fetchGenders();
         }, [])
     );
 
+    const pickImage = async () => {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            quality: 1,
+            base64: false,
+        });
+
+        if (!result.canceled) {
+            const asset = result.assets[0];
+            setPoster(asset.file);
+
+        }
+    };
+
     const handleSave = async () => {
+        const formData = new FormData();
+
+        formData.append('title', title);
+        formData.append('description', description);
+        formData.append('duration', duration);
+        gender.forEach((id: number) => {
+            formData.append('genderIds', id.toString());
+        });
+
+        if (poster) {
+            formData.append('poster', poster);
+        }
+
         setSaving(true);
         const res = await fetch('http://localhost:8000/filmes/', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title, description, duration }),
+            body: formData,
         });
         navigation.navigate('Movies');
         setSaving(false);
     };
+
+    const toggleOption = (option: number) => {
+        setGender((prevGender) =>
+            prevGender.includes(option)
+                ? prevGender.filter((item) => item !== option)
+                : [...prevGender, option]
+        );
+    }
 
     return (
         <View style={styles.container}>
@@ -59,13 +107,30 @@ const CreateMovieScreen = ({ navigation }: Props) => {
                 style={styles.input}
                 keyboardType="numeric"
             />
-            {/*todo --> quando o app tiver finalizado descobrir como fazer upload do file */}
+            <Text style={styles.label}>Gêneros</Text>
+            {loading ? (
+                <ActivityIndicator size="small" color="#FCA311" />
+            ) : (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))' }}>
+                    {genders.map((g) => (
+                        <Checkbox.Item
+                            key={g.id}
+                            label={g.name}
+                            status={gender.includes(g.id) ? 'checked' : 'unchecked'}
+                            onPress={() => toggleOption(g.id)}
+                        />
+                    ))}
+                </div>
+            )}
             <Text style={styles.label}>Poster</Text>
-            <TextInput
-                value={poster}
-                onChangeText={setPoster}
-                style={styles.input}
-            />
+            <TouchableOpacity onPress={pickImage}>
+                <TextInput
+                    value={!poster ? 'Selecione um arquivo' : 'Arquivo selecionado'}
+                    style={styles.input}
+                    editable={false}
+                />
+            </TouchableOpacity>
+
             <div style={{ display: 'flex', flexDirection: 'row', gap: 8, marginTop: 16, alignSelf: 'center' }}>
                 <TouchableOpacity
                     onPress={handleSave}

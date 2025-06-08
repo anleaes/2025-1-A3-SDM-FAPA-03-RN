@@ -4,6 +4,7 @@ import { useFocusEffect } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { DrawerParamList } from '../navigation/DrawerNavigator';
+import { Gender } from './GenderScreen';
 
 type Props = DrawerScreenProps<DrawerParamList, 'Movies'>;
 
@@ -13,6 +14,7 @@ export type Movie = {
     description: string;
     poster: string;
     duration: number;
+    gender: Gender[];
 };
 
 const MovieScreen = ({ navigation }: Props) => {
@@ -46,6 +48,7 @@ const MovieScreen = ({ navigation }: Props) => {
             <Text style={styles.name}>{item.title}</Text>
             <Image source={{ uri: item.poster }} style={{ width: 100, height: 100 }} />
             <Text style={styles.description}>{item.description}</Text>
+            <Text style={styles.description}>Gêneros: {item.gender.map((g) => g.name).join(', ')}</Text>
             <Text style={styles.description}>Duração: {item.duration}min</Text>
             <div style={styles.button}>
                 <TouchableOpacity
