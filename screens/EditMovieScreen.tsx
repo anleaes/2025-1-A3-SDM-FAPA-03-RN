@@ -1,22 +1,22 @@
 import { DrawerScreenProps } from '@react-navigation/drawer';
-import { useFocusEffect } from 'expo-router';
-import React, { useCallback, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Checkbox } from 'react-native-paper';
 import { DrawerParamList } from '../navigation/DrawerNavigator';
 import { Gender } from './GenderScreen';
 import * as ImagePicker from 'expo-image-picker';
 
-type Props = DrawerScreenProps<DrawerParamList, 'CreateMovie'>;
+type Props = DrawerScreenProps<DrawerParamList, 'EditMovie'>;
 
-const CreateMovieScreen = ({ navigation }: Props) => {
-
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [duration, setDuration] = useState('');
+const EditMovieScreen = ({ route, navigation }: Props) => {
+    const { movie } = route.params;
+    const [title, setTitle] = useState(movie.title);
+    const [description, setDescription] = useState(movie.description);
+    const [duration, setDuration] = useState(movie.duration);
     const [poster, setPoster] = useState<File | undefined>(undefined);
-    const [gender, setGender] = useState<number[]>([]);
-    const [genders, setGenders] = useState<Gender[]>([]);
+    const [genderSelected, setGenderSelected] = useState<number[]>([]);
+    const [gender] = useState<Gender[]>(movie.gender);
+    const [gendersList, setGendersList] = useState<Gender[]>([]);
     const [saving, setSaving] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -24,20 +24,19 @@ const CreateMovieScreen = ({ navigation }: Props) => {
         setLoading(true);
         const response = await fetch('http://localhost:8000/gêneros/');
         const data = await response.json();
-        setGenders(data);
+        setGendersList(data);
         setLoading(false);
     };
 
-    useFocusEffect(
-        useCallback(() => {
-            setTitle('');
-            setDescription('');
-            setPoster(undefined);
-            setDuration('');
-            setGender([]);
-            fetchGenders();
-        }, [])
-    );
+    useEffect(() => {
+        setTitle(movie.title);
+        setDescription(movie.description);
+        setDuration(movie.duration);
+        for (const genderSaved of gender) {
+            setGenderSelected((prevGender) => [...prevGender, genderSaved.id]);
+        }
+        fetchGenders();
+    }, [movie])
 
     const pickImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
@@ -58,8 +57,8 @@ const CreateMovieScreen = ({ navigation }: Props) => {
 
         formData.append('title', title);
         formData.append('description', description);
-        formData.append('duration', duration);
-        gender.forEach((id: number) => {
+        formData.append('duration', duration.toString());
+        genderSelected.forEach((id: number) => {
             formData.append('genderIds', id.toString());
         });
 
@@ -68,8 +67,8 @@ const CreateMovieScreen = ({ navigation }: Props) => {
         }
 
         setSaving(true);
-        const res = await fetch('http://localhost:8000/filmes/', {
-            method: 'POST',
+        const res = await fetch(`http://localhost:8000/filmes/${movie.id}/`, {
+            method: 'PUT',
             body: formData,
         });
         navigation.navigate('Movies');
@@ -77,7 +76,7 @@ const CreateMovieScreen = ({ navigation }: Props) => {
     };
 
     const toggleOption = (option: number) => {
-        setGender((prevGender) =>
+        setGenderSelected((prevGender) =>
             prevGender.includes(option)
                 ? prevGender.filter((item) => item !== option)
                 : [...prevGender, option]
@@ -102,8 +101,11 @@ const CreateMovieScreen = ({ navigation }: Props) => {
             />
             <Text style={styles.label}>Duração</Text>
             <TextInput
-                value={duration}
-                onChangeText={setDuration}
+                value={duration.toString()}
+                onChangeText={(text) => {
+                    const parsed = parseInt(text, 10);
+                    setDuration(isNaN(parsed) ? 0 : parsed);
+                }}
                 style={styles.input}
                 keyboardType="numeric"
             />
@@ -112,11 +114,11 @@ const CreateMovieScreen = ({ navigation }: Props) => {
                 <ActivityIndicator size="small" color="#FCA311" />
             ) : (
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))' }}>
-                    {genders.map((g) => (
+                    {gendersList.map((g) => (
                         <Checkbox.Item
                             key={g.id}
                             label={g.name}
-                            status={gender.includes(g.id) ? 'checked' : 'unchecked'}
+                            status={genderSelected.includes(g.id) ? 'checked' : 'unchecked'}
                             onPress={() => toggleOption(g.id)}
                         />
                     ))}
@@ -183,4 +185,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CreateMovieScreen;
+export default EditMovieScreen;
