@@ -39,16 +39,18 @@ const EditMovieScreen = ({ route, navigation }: Props) => {
     }, [movie])
 
     const pickImage = async () => {
-        const result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            quality: 1,
-            base64: false,
-        });
+        try {
+            const { canceled, assets } = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: 'images',
+                quality: 1,
+                base64: false,
+            });
 
-        if (!result.canceled) {
-            const asset = result.assets[0];
-            setPoster(asset.file);
-
+            if (!canceled && assets?.length > 0) {
+                setPoster(assets[0].file);
+            }
+        } catch (error) {
+            console.warn('Erro ao selecionar imagem:', error);
         }
     };
 
@@ -76,10 +78,14 @@ const EditMovieScreen = ({ route, navigation }: Props) => {
     };
 
     const toggleOption = (option: number) => {
+        //prevGender é o estado anterior, ou seja, o array atual de opções selecionadas.
         setGenderSelected((prevGender) =>
+            // verificação se a opção já está na lista de estados salvos no back
             prevGender.includes(option)
-                ? prevGender.filter((item) => item !== option)
-                : [...prevGender, option]
+                ? // se já estiver, cria uma nova lista removendo essa opção
+                prevGender.filter((item) => item !== option)
+                : // se não estiver, cria uma nova lista adicionando a opção
+                [...prevGender, option]
         );
     }
 
