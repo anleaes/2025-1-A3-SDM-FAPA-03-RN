@@ -40,16 +40,22 @@ const CreateMovieScreen = ({ navigation }: Props) => {
     );
 
     const pickImage = async () => {
-        const result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            quality: 1,
-            base64: false,
-        });
+        try {
+            //abre a galeria de imagens do dispositivo
+            const { canceled, assets } = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: 'images', // aceita apenas arquivos de imagem
+                quality: 1,           //qualidade da imagem (1 = máxima)
+                base64: false,
+            });
 
-        if (!result.canceled) {
-            const asset = result.assets[0];
-            setPoster(asset.file);
-
+            //verifica se uma imagem realmente foi selecionada uma imagem
+            if (!canceled && assets?.length > 0) {
+                //pega imagem escolhida no primeiro item do array
+                setPoster(assets[0].file);
+            }
+        } catch (error) {
+            //erro (ex: permissão negada), disparado no console
+            console.warn('Erro ao selecionar imagem:', error);
         }
     };
 

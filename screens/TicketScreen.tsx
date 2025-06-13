@@ -54,7 +54,7 @@ const TicketScreen = ({ navigation }: Props) => {
 
     const renderItem = ({ item }: { item: Ticket }) => (
         <View style={styles.card}>
-            <Text style={styles.status}>{item.status.charAt(0).toUpperCase() + item.status.slice(1)}</Text>
+            <Text style={styles.status}>Pagamento - {item.status.charAt(0).toUpperCase() + item.status.slice(1)}</Text>
             <Text style={styles.description}>Cliente: {item.clientDetail.name}</Text>
             <Text style={styles.description}>Classificação: {ratingMap[item.rating]}</Text>
             <Text style={styles.description}>Pagamento via: {item.paymentMethod}</Text>
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     fab: {
         position: 'absolute',
         right: 20,
-        bottom: 20,
+        bottom: 40,
         backgroundColor: '#14213D',
         borderRadius: 28,
         padding: 14,
